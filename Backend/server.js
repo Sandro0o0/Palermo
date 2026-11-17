@@ -39,6 +39,14 @@ server.use(
   }),
 );
 
+// Test
+server.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Palermo API is running",
+  });
+});
+
 server.use("/auth", auth);
 server.use("/category", category);
 server.use("/product", product);
@@ -54,10 +62,13 @@ server.use(notFound);
 
 // Error handler (must come after notFound)
 server.use(errorHandler);
+
+// Render and other hosting providers assign a port.
+const PORT = process.env.PORT || 8080;
 const RUN = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
-    server.listen(process.env.PORT, () => {
+    server.listen(PORT, () => {
       console.log("Server is running CHASE AND CATCH!");
     });
   } catch (err) {
