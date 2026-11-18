@@ -147,10 +147,8 @@ const Table12 = () => {
       try {
         const access_token = JSON.parse(localStorage.getItem("access_token"));
 
-        const response = await fetch(`${baseUrl}/ingredients`, {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
+        const response = await fetch(`${baseUrl}/ingredient`, {
+          method: "GET",
         });
 
         const dt = await response.json();
@@ -160,6 +158,7 @@ const Table12 = () => {
           return;
         }
 
+        console.log(dt);
         setData(dt?.data || []);
       } catch (err) {
         console.error(err);

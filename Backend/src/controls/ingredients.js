@@ -3,7 +3,6 @@ const { CustomAPIError } = require("../errors/index");
 
 // ####
 const { StatusCodes } = require("http-status-codes");
-
 const getAll = async (req, res) => {
   const totalIngredients = await Ingredients.countDocuments({});
 
@@ -13,19 +12,16 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const maxPage = Math.ceil(totalIngredients / limit);
 
-  const load = Ingredients.find({});
-
-  const result = await load.limit(limit).skip(skip);
+  const result = await Ingredients.find({}).limit(limit).skip(skip);
 
   res.status(200).json({
-    totalProducts,
+    totalIngredients,
     limit,
     page,
     maxPage,
     data: result,
   });
 };
-
 const create = async (req, res) => {
   try {
     const { title, amount } = req.body;
