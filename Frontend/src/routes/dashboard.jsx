@@ -4,6 +4,7 @@ import Dashbord from "../pages/dashboard";
 import Analytics from "../pages/dashboard/display";
 import { ProductsRoutes } from "./products";
 import Authorization from "../admin/authorization";
+import { Ingredient } from "../pages/dashboard/ingredient";
 
 export const DashboardRoute = {
   path: "dashboard",
@@ -16,7 +17,7 @@ export const DashboardRoute = {
   ),
   children: [
     { index: true, element: <Analytics /> },
-    { path: "ingredients", element: "" },
+    { path: "ingredients", element: <Ingredient /> },
     { path: "orders", element: "" },
     { path: "category", element: "" },
     { path: "storage", element: "" },

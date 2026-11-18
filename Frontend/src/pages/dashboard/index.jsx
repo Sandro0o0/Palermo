@@ -7,14 +7,18 @@ import { Outlet } from "react-router-dom";
 export default function Dashboard({ children }) {
   return (
     <>
-      <AuraBg>
-        <div className="flex flex-row gap-3">
-          <AppSidebar />
-          {/* <DashboardHead /> */}
+      <AuraBg />
+      <div className="flex flex-row gap-3">
+        <AppSidebar />
+
+        <main className="flex flex-col w-full gap-2">
+          <DashboardHead />
           <Outlet />
-          {/* {children} */}
-        </div>
-      </AuraBg>
+        </main>
+
+        {/* {children} */}
+      </div>
+      {/* </AuraBg> */}
     </>
   );
 }

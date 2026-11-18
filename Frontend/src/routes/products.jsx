@@ -4,9 +4,9 @@ import { Product } from "../pages/dashboard/products";
 
 export const ProductsRoutes = {
   path: "product",
-  element: <Dashboard />,
+  element: "",
   children: [
-    { index: true, element: <Product /> },
+    { path: "all", element: <Product /> },
     {
       path: "lowstock",
       element: <Lowstock />,

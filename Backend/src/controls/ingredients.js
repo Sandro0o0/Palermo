@@ -3,6 +3,29 @@ const { CustomAPIError } = require("../errors/index");
 
 // ####
 const { StatusCodes } = require("http-status-codes");
+
+const getAll = async (req, res) => {
+  const totalIngredients = await Ingredients.countDocuments({});
+
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const limit = Math.max(1, Number(req.query.limit) || 10);
+
+  const skip = (page - 1) * limit;
+  const maxPage = Math.ceil(totalIngredients / limit);
+
+  const load = Ingredients.find({});
+
+  const result = await load.limit(limit).skip(skip);
+
+  res.status(200).json({
+    totalProducts,
+    limit,
+    page,
+    maxPage,
+    data: result,
+  });
+};
+
 const create = async (req, res) => {
   try {
     const { title, amount } = req.body;
@@ -36,4 +59,4 @@ const create = async (req, res) => {
     throw err;
   }
 };
-module.exports = { create };
+module.exports = { create getAll };

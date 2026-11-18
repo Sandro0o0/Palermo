@@ -8,7 +8,7 @@ import {
   LuUserPlus,
 } from "react-icons/lu";
 
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const initialValues = {
   username: "",
@@ -21,7 +21,6 @@ export function Login() {
   const [values, setValues] = useState(initialValues);
   const [focused, setFocused] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -47,13 +46,16 @@ export function Login() {
     try {
       setLoading(true);
 
-      const response = await fetch(`http://localhost:8080/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
         },
-        body: JSON.stringify(values),
-      });
+      );
 
       const data = await response.json();
       console.log(data);
@@ -112,17 +114,19 @@ export function Login() {
     <div className="flex justify-center items-center w-screen h-screen mx-auto">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-90 rounded-xl bg-white/10 shadow-xl backdrop-blur-xl overflow-hidden"
+        className="w-full max-w-90 rounded-xl bg-white/10 shadow-xl border-1 border-white/50 outline-6 outline-white/30 backdrop-blur-xl overflow-hidden"
       >
         {/* Header */}
         <div className="flex flex-col items-center gap-2 py-6">
-          <div className="grid size-12 place-items-center rounded-xl bg-brand text-white shadow-brand">
+          {/* <div className="grid size-12 place-items-center rounded-xl bg-brand text-white shadow-brand">
             <LuUserPlus size={24} />
-          </div>
+          </div> */}
 
-          <h1 className="text-brand text-2xl font-bold">Create account</h1>
+          <h1 className="text-brand text-2xl font-bold font-galastio!">
+            Login
+          </h1>
 
-          <p className="text-sm text-brand-300">Register to get started</p>
+          <p className="text-sm text-brand-300 ">Login to get started</p>
         </div>
 
         <div className="flex flex-col gap-6 px-6 pb-6">

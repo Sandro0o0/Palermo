@@ -50,7 +50,7 @@ export default function Analytics() {
   return (
     <>
       <div className="w-full flex flex-col gap-5 ">
-        <DashboardHead />
+        {/* <DashboardHead /> */}
         <DashboardBody />
       </div>
     </>
