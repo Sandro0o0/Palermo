@@ -22,6 +22,17 @@ const getAll = async (req, res) => {
     data: result,
   });
 };
+const getSingle = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await Ingredients.findById({ _id: id });
+  if (!result) {
+    throw new CustomAPIError("Ingredient not Found", StatusCodes.NOT_FOUND);
+  }
+
+  res.status(StatusCodes.OK).json(result);
+};
+
 const create = async (req, res) => {
   try {
     const { title, amount } = req.body;
@@ -55,4 +66,4 @@ const create = async (req, res) => {
     throw err;
   }
 };
-module.exports = { create, getAll };
+module.exports = { create, getAll, getSingle };

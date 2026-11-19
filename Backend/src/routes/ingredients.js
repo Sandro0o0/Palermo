@@ -6,11 +6,13 @@ const authenticate = require("../middlwares/authenticate");
 const { givePermission } = require("../permissions/permision");
 
 // Imports
-const { create, getAll } = require("../controls/ingredients");
+const { create, getAll, getSingle } = require("../controls/ingredients");
 
 router
   .route("/")
   .post(authenticate, givePermission(["admin", "manager"]), create)
   .get(getAll);
+
+router.route("/:id").get(getSingle);
 
 module.exports = router;

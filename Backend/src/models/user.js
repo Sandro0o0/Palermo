@@ -58,12 +58,10 @@ userSchema.methods.createJwt = async function (user) {
     email: user.email,
     role: user.role,
   };
-  console.log("ACCESS:", !!process.env.JWT_ACCESS);
-  console.log("REFRESH:", !!process.env.JWT_REFRESH);
-  const access_token = await jwt.sign(result, process.env.JWT_ACCESS, {
+  const access_token = jwt.sign(result, process.env.JWT_ACCESS, {
     expiresIn: "15m",
   });
-  const refresh_token = await jwt.sign(result, process.env.JWT_REFRESH, {
+  const refresh_token = jwt.sign(result, process.env.JWT_REFRESH, {
     expiresIn: "30d",
   });
   const tokens = {

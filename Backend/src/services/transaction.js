@@ -45,7 +45,10 @@ class Transaction {
       },
     );
     if (!ingredient) {
-      throw new CustomAPIError("Cannot be withdrawed", 400);
+      return {
+        status: false,
+        message: "withdraw unSuccsessful",
+      };
     }
     return {
       status: true,

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { saveAvailableAmounts } = require("../services/saveAmount");
+const { saveSingleAvailableAmounts } = require("../services/saveAmount");
 
 const ingredientSchema = new mongoose.Schema(
   {
@@ -22,8 +22,9 @@ const ingredientSchema = new mongoose.Schema(
   },
 );
 
-ingredientSchema.post("findOneAndUpdate", async function () {
-  await saveAvailableAmounts();
+ingredientSchema.post("findOneAndUpdate", async function (doc) {
+  if (!doc) return;
+  await saveSingleAvailableAmounts(doc._id);
 });
 
 ingredientSchema.virtual("getAmount").get(function () {

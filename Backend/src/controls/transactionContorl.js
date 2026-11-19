@@ -38,7 +38,6 @@ const create = async (req, res) => {
   };
   console.log(transaction_type);
 
-  // try {
   const TransactionCreate = new TransactionClass(amount);
 
   const makeTransaction = {
@@ -68,11 +67,7 @@ const create = async (req, res) => {
   res.status(StatusCodes.CREATED).json({
     status: updateIngredient.message,
     updatedIngredient: updateIngredient.data,
-  }); // add Transaction
-  // } catch (err) {
-  //   // throw new Error(err);
-  //   console.error(err);
-  // }
+  });
 };
 
 module.exports = { create };
