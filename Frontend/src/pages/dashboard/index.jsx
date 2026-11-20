@@ -12,7 +12,7 @@ export default function Dashboard({ children }) {
         <AppSidebar />
 
         <main className="flex flex-col w-full gap-2">
-          <DashboardHead />
+          {/* <DashboardHead /> */}
           <Outlet />
         </main>
 

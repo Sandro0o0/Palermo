@@ -19,11 +19,8 @@ const requirementsHandle = async (requirements = []) => {
 
       const ingredient = await Ingredient.findById(currRequirement.ingredient);
 
-      if (!ingredient) {
-        throw new CustomAPIError(
-          "ingredient does not exist try creating ingredient first",
-          404,
-        );
+      if (!ingredient || !ingredient.active) {
+        return undefined;
       }
 
       prevRequirement.push({
@@ -37,9 +34,14 @@ const requirementsHandle = async (requirements = []) => {
     },
     Promise.resolve([]),
   );
+  if (!ingredientAmounts) {
+    return "N/A";
+  }
 
   const resultObj = {};
   //=========>
+
+  // Product requirement calculate
   ingredientAmounts.forEach((element) => {
     const clacResult = calculateSingleRequirement(element);
     resultObj[clacResult.title] = clacResult.result;

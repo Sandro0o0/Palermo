@@ -8,6 +8,13 @@ export default function Authorization({ roles = [], children }) {
   if (!payload) {
     tokenRefresh();
   }
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  if (payload.exp - currentTime < 60) {
+    tokenRefresh();
+  }
+  console.log(payload);
+  console.log(Math.floor(Date.now() / 1000));
 
   if (!roles.includes(payload.role)) {
     return <Navigate to={"/403"} replace />;

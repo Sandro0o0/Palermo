@@ -18,7 +18,11 @@ router
   .post(authenticate, givePermission(["admin", "manager"]), create)
   .get(authenticate, givePermission(["admin", "manager"]), getAll);
 
-router.route("/lowstock").get(getLowStock);
-router.route("/:id").get(getSingle);
+router
+  .route("/lowstock")
+  .get(authenticate, givePermission(["admin", "manager"]), getLowStock);
+router
+  .route("/:id")
+  .get(authenticate, givePermission(["admin", "manager"]), getSingle);
 
 module.exports = router;

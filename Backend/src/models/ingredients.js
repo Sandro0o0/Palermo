@@ -14,8 +14,14 @@ const ingredientSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    active: {
+      type: Boolean,
+      default: true,
+      required: [true, "active field is required"],
+    },
   },
   {
+    id: false,
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -23,7 +29,7 @@ const ingredientSchema = new mongoose.Schema(
 );
 
 ingredientSchema.post("findOneAndUpdate", async function (doc) {
-  if (!doc) return;
+  if (!doc || doc.active === false) return;
   await saveSingleAvailableAmounts(doc._id);
 });
 

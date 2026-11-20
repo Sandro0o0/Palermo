@@ -84,6 +84,7 @@ const productSchema = new mongoose.Schema(
     },
   },
   {
+    id: false,
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -110,8 +111,9 @@ productSchema.virtual("isAvaiable", function () {
 productSchema.statics.findAllWithAvailableAmount = async function (
   skip,
   limit,
+  filter = {},
 ) {
-  const products = await this.find({}).skip(skip).limit(limit);
+  const products = await this.find(filter).skip(skip).limit(limit);
 
   return Promise.all(
     products.map(async (product) => ({

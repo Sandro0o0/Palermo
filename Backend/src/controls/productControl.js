@@ -1,11 +1,18 @@
 const { CustomAPIError } = require("../errors/index");
+
+// Import Models
 const Product = require("../models/product");
 const Category = require("../models/category");
 const Ingredient = require("../models/ingredients");
 
+// filter
+const { GetFilter } = require("../services/date");
+
 // Get all
 const getAll = async (req, res) => {
-  const totalProducts = await Product.countDocuments({});
+  const filter = GetFilter(req);
+
+  const totalProducts = await Product.countDocuments(filter);
 
   const page = Math.max(1, Number(req.query.page) || 1);
   const limit = Math.max(1, Number(req.query.limit) || 10);
@@ -13,7 +20,7 @@ const getAll = async (req, res) => {
   const skip = (page - 1) * limit;
   const maxPage = Math.ceil(totalProducts / limit);
 
-  const result = await Product.findAllWithAvailableAmount(skip, limit);
+  const result = await Product.findAllWithAvailableAmount(skip, limit, filter);
 
   res.status(200).json({
     totalProducts,
@@ -40,7 +47,7 @@ const getSingle = async (req, res) => {
 
 // create One
 const create = async (req, res) => {
-  // --add requirements
+  // import data from request body
   const { title, description, category, image, requirements } = req.body;
 
   // check if valued are provided
@@ -57,42 +64,28 @@ const create = async (req, res) => {
   }
 
   const { original, discount_percentage } = req.body.price;
-
-  const findCategory = await Category.findOne({ title: category });
-
-  let newCategory;
-
-  if (!findCategory) {
-    newCategory = await Category.createCategory(category);
-  }
-
-  const categoryId = findCategory ? findCategory._id : newCategory._id;
+  const categoryDoc = await Category.createCategory(category);
+  // product Create obj
   const productObj = {
     title: title.toLowerCase().trim(),
     description,
     price: { original, discount_percentage },
-    category: categoryId,
+    category: categoryDoc._id,
     image,
     requirements,
   };
   let product = await Product.create(productObj);
 
-  // await product.populate({
-  //   path: "requirements.ingredient",
-  //   select: "title",
-  // });
+  // get expanded value of ingredient
+  await product.populate({
+    path: "requirements.ingredient",
+    select: "amount title",
+  });
 
-  // const ingredient = await Ingredient.findById(
-  //   "6af5e6021ef280a81d80a3e9",
-  // ).lean();
-
-  // console.log(ingredient);
-  // product = await product.populate("category");
-
-  // const getAvailableAmount = await product.getAvailableAmount();
+  // update product stock by calculating from requirements
+  product.stock = await product.getAvailableAmount();
   res.status(200).json({
     product,
-    // availableAmount: getAvailableAmount,
   });
 };
 const getLowStock = async (req, res) => {};

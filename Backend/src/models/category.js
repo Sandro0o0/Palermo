@@ -25,6 +25,7 @@ categorySchema.statics.createCategory = async function (title) {
     return category;
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
 

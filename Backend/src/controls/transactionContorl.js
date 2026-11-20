@@ -8,7 +8,6 @@ const { CustomAPIError } = require("../errors/index");
 const create = async (req, res) => {
   const { amount, ingredientId, transaction_type } = req.body;
   const user = req.user;
-  //   transaction_type = null;
 
   if (!user) {
     throw new CustomAPIError("User Not Found", StatusCodes.NOT_FOUND);
@@ -21,14 +20,6 @@ const create = async (req, res) => {
     );
   }
 
-  // Check req status
-  // if (transaction_type !== "deposit" || transaction_type !== "withdraw") {
-  //   throw new CustomAPIError(
-  //     "transaction_type has to be deposit/withdraw",
-  //     400,
-  //   );
-  // }
-
   // Transaction input
   const transactionObj = {
     createdBy: user.userId,
@@ -36,7 +27,6 @@ const create = async (req, res) => {
     transaction_type,
     amount,
   };
-  console.log(transaction_type);
 
   const TransactionCreate = new TransactionClass(amount);
 
